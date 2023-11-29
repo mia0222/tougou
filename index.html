@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang = "ja">
 <head>
 <meta charset="utf-8">
-<title>位置情報取得</title>
+<title>プログラムの統合</title>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <h1>位置情報の取得</h1>
+    <h1>プログラムの統合</h1>
+
+    <div id="deviceorientation">
+        <p>北極方向に対する向き: <span id="dir"></span></p>
+        <p>前後の傾き角度: <span id="fb"></span></p>
+        <p>左右の傾き角度: <span id="lr"></span></p>
+    </div>
+
     <p id="locationData">位置情報はここに表示されます.</p>
     <p id="distance">移動距離: 0 メートル</p>
     <p id="calories">消費カロリー: 0 kcal</p>
@@ -40,10 +46,6 @@
         var watchID = null; // 位置情報の監視ID
         var lastPosition = null;
         var totalDistance = 0; // 移動距離の累積
-
-        let isRunning = false;
-        let stepCount = 0;
-        let lastOrientation = { alpha: 0, beta: 0, gamma: 0 };
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
             var R = 6371; // Radius of the Earth in kilometers
@@ -128,6 +130,10 @@
                 stopButton.disabled = true;
             }
         }
+
+        let isRunning = false;
+        let stepCount = 0;
+        let lastOrientation = { alpha: 0, beta: 0, gamma: 0 };
 
         function startSensor() {
       DeviceOrientationEvent.requestPermission().then(function (response) {
